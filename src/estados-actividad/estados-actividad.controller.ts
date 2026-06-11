@@ -1,16 +1,18 @@
 /* src/estados-actividad/estados-actividad.controller.ts: */
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-import { EstadosActividadService } from './estados-actividad.service';
-import { CreateEstadosActividadDto } from './dto/create-estados-actividad.dto';
-import { UpdateEstadosActividadDto } from './dto/update-estados-actividad.dto';
+import { Controller, Get, Post, Body, Patch, Param, Delete, } from '@nestjs/common';
+import { EstadosActividadService } from './estados-actividad.service.js';
+import { CreateEstadoActividadDto } from './dto/create-estado-actividad.dto.js';
+import { UpdateEstadoActividadDto } from './dto/update-estado-actividad.dto.js';
 
 @Controller('estados-actividad')
 export class EstadosActividadController {
-  constructor(private readonly estadosActividadService: EstadosActividadService) { }
+  constructor(
+    private readonly estadosActividadService: EstadosActividadService,
+  ) { }
 
   @Post()
-  create(@Body() createEstadosActividadDto: CreateEstadosActividadDto) {
-    return this.estadosActividadService.create(createEstadosActividadDto);
+  create(@Body() createEstadoActividadDto: CreateEstadoActividadDto) {
+    return this.estadosActividadService.create(createEstadoActividadDto);
   }
 
   @Get()
@@ -24,8 +26,11 @@ export class EstadosActividadController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateEstadosActividadDto: UpdateEstadosActividadDto) {
-    return this.estadosActividadService.update(+id, updateEstadosActividadDto);
+  update(
+    @Param('id') id: string,
+    @Body() updateEstadoActividadDto: UpdateEstadoActividadDto,
+  ) {
+    return this.estadosActividadService.update(+id, updateEstadoActividadDto);
   }
 
   @Delete(':id')
