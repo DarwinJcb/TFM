@@ -1,0 +1,260 @@
+/**
+ * prisma/schema.prisma:
+ */
+generator client {
+  provider     = "prisma-client"
+  output       = "../src/generated/prisma"
+  moduleFormat = "cjs"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Genero {
+  MASCULINO
+  FEMENINO
+}
+
+enum TipoSuscripcion {
+  BRONCE
+  GOLD
+  PREMIUM
+  PLATINO
+}
+
+enum TipoInteraccion {
+  LIKE
+  NO_LIKE
+  EVITAR
+  REPORTAR
+  SUPERLIKE
+}
+
+model Usuario {
+  IdUsuario Int @id @default(autoincrement())
+
+  nombre                  String
+  edad                    Int
+  biografia               String?
+  peso                    Float?
+  altura                  Float?
+  nacionalidad            String?
+  genero                  Genero
+  numero                  String?
+  correo                  String                 @unique
+  signoZodiacal           String?
+  queBusca                String?
+  hobby                   String?
+  dedicacion              String?
+  fotos                   Foto[]
+  ubicaciones             Ubicacion[]
+  musicas                 Musica[]
+  suscripcion             Suscripcion?
+  condicionComunicacion   CondicionComunicacion?
+  estadoActividad         EstadoActividad?
+  interaccionesRealizadas Interaccion[]          @relation("InteraccionesRealizadas")
+  interaccionesRecibidas  Interaccion[]          @relation("InteraccionesRecibidas")
+  matchesComoUsuarioUno   Match[]                @relation("MatchUsuarioUno")
+  matchesComoUsuarioDos   Match[]                @relation("MatchUsuarioDos")
+
+  chatsComoUsuarioUno Chat[] @relation("ChatUsuarioUno")
+  chatsComoUsuarioDos Chat[] @relation("ChatUsuarioDos")
+
+  mensajes Mensaje[] @relation("MensajesUsuario")
+
+  donacionesEnviadas  Donacion[] @relation("DonacionesEnviadas")
+  donacionesRecibidas Donacion[] @relation("DonacionesRecibidas")
+
+  fechaCreacion      DateTime @default(now())
+  fechaActualizacion DateTime @updatedAt
+}
+
+model Ubicacion {
+  IdUbicacion Int @id @default(autoincrement())
+
+  ciudad      String
+  pais        String
+  descripcion String?
+
+  UsuarioFK Int
+  usuario   Usuario @relation(fields: [UsuarioFK], references: [IdUsuario], onDelete: Cascade)
+
+  fechaCreacion      DateTime @default(now())
+  fechaActualizacion DateTime @updatedAt
+}
+
+model Foto {
+  IdFoto Int @id @default(autoincrement())
+
+  urlFoto     String
+  descripcion String?
+
+  UsuarioFK Int
+  usuario   Usuario @relation(fields: [UsuarioFK], references: [IdUsuario], onDelete: Cascade)
+
+  fechaCreacion DateTime @default(now())
+}
+
+model Musica {
+  IdMusica Int @id @default(autoincrement())
+
+  nombreCancion String?
+  tipoMusica    String?
+
+  UsuarioFK Int
+  usuario   Usuario @relation(fields: [UsuarioFK], references: [IdUsuario], onDelete: Cascade)
+
+  fechaCreacion      DateTime @default(now())
+  fechaActualizacion DateTime @updatedAt
+}
+
+model PlanSuscripcion {
+  IdPlanSuscripcion Int @id @default(autoincrement())
+
+  tipo               TipoSuscripcion @unique
+  valor              Decimal         @db.Decimal(10, 2)
+  ventajas           String?
+  contenido          String?
+  mensajesIlimitados Boolean         @default(false)
+
+  suscripciones Suscripcion[]
+  restricciones Restriccion[]
+
+  fechaCreacion      DateTime @default(now())
+  fechaActualizacion DateTime @updatedAt
+}
+
+model Suscripcion {
+  IdSuscripcion Int @id @default(autoincrement())
+
+  UsuarioFK         Int @unique
+  PlanSuscripcionFK Int
+
+  fechaInicio DateTime  @default(now())
+  fechaFin    DateTime?
+  activa      Boolean   @default(true)
+
+  usuario         Usuario         @relation(fields: [UsuarioFK], references: [IdUsuario], onDelete: Cascade)
+  planSuscripcion PlanSuscripcion @relation(fields: [PlanSuscripcionFK], references: [IdPlanSuscripcion], onDelete: Restrict)
+}
+
+model Restriccion {
+  IdRestriccion Int @id @default(autoincrement())
+
+  descripcion String
+  activa      Boolean @default(true)
+
+  PlanSuscripcionFK Int?
+  planSuscripcion   PlanSuscripcion? @relation(fields: [PlanSuscripcionFK], references: [IdPlanSuscripcion], onDelete: Cascade)
+
+  fechaCreacion DateTime @default(now())
+}
+
+model Interaccion {
+  IdInteraccion Int @id @default(autoincrement())
+
+  tipo        TipoInteraccion
+  descripcion String?
+
+  UsuarioOrigenFK  Int
+  UsuarioDestinoFK Int
+
+  usuarioOrigen  Usuario @relation("InteraccionesRealizadas", fields: [UsuarioOrigenFK], references: [IdUsuario], onDelete: Cascade)
+  usuarioDestino Usuario @relation("InteraccionesRecibidas", fields: [UsuarioDestinoFK], references: [IdUsuario], onDelete: Cascade)
+
+  fechaCreacion DateTime @default(now())
+
+  @@unique([UsuarioOrigenFK, UsuarioDestinoFK, tipo])
+}
+
+model Match {
+  IdMatch Int @id @default(autoincrement())
+
+  UsuarioUnoFK Int
+  UsuarioDosFK Int
+  activo       Boolean @default(true)
+
+  usuarioUno Usuario @relation("MatchUsuarioUno", fields: [UsuarioUnoFK], references: [IdUsuario], onDelete: Cascade)
+  usuarioDos Usuario @relation("MatchUsuarioDos", fields: [UsuarioDosFK], references: [IdUsuario], onDelete: Cascade)
+
+  chats Chat[]
+
+  fechaCreacion DateTime @default(now())
+
+  @@unique([UsuarioUnoFK, UsuarioDosFK])
+}
+
+model Chat {
+  IdChat Int @id @default(autoincrement())
+
+  UsuarioUnoFK Int
+  UsuarioDosFK Int
+  MatchFK      Int? @unique
+
+  usuarioUno Usuario @relation("ChatUsuarioUno", fields: [UsuarioUnoFK], references: [IdUsuario], onDelete: Cascade)
+  usuarioDos Usuario @relation("ChatUsuarioDos", fields: [UsuarioDosFK], references: [IdUsuario], onDelete: Cascade)
+  match      Match?  @relation(fields: [MatchFK], references: [IdMatch], onDelete: SetNull)
+
+  mensajes Mensaje[]
+
+  fechaCreacion      DateTime @default(now())
+  fechaActualizacion DateTime @updatedAt
+
+  @@unique([UsuarioUnoFK, UsuarioDosFK])
+}
+
+model Mensaje {
+  IdMensaje Int @id @default(autoincrement())
+
+  contenido String
+  leido     Boolean @default(false)
+
+  ChatFK    Int
+  UsuarioFK Int
+
+  chat    Chat    @relation(fields: [ChatFK], references: [IdChat], onDelete: Cascade)
+  usuario Usuario @relation("MensajesUsuario", fields: [UsuarioFK], references: [IdUsuario], onDelete: Cascade)
+
+  fechaCreacion DateTime @default(now())
+
+  @@index([ChatFK])
+}
+
+model CondicionComunicacion {
+  IdCondicionComunicacion Int @id @default(autoincrement())
+
+  permiteMensajes          Boolean @default(true)
+  requiereMatchParaChatear Boolean @default(true)
+  descripcion              String?
+
+  UsuarioFK Int     @unique
+  usuario   Usuario @relation(fields: [UsuarioFK], references: [IdUsuario], onDelete: Cascade)
+
+  fechaCreacion      DateTime @default(now())
+  fechaActualizacion DateTime @updatedAt
+}
+
+model EstadoActividad {
+  IdEstadoActividad Int @id @default(autoincrement())
+
+  estaActivo     Boolean   @default(false)
+  enLive         Boolean   @default(false)
+  ultimaConexion DateTime?
+
+  UsuarioFK Int     @unique
+  usuario   Usuario @relation(fields: [UsuarioFK], references: [IdUsuario], onDelete: Cascade)
+
+  fechaActualizacion DateTime @updatedAt
+}
+
+model Donacion {
+  IdDonacion        Int      @id @default(autoincrement())
+  monto             Decimal  @db.Decimal(10, 2)
+  mensaje           String?
+  UsuarioDonanteFK  Int
+  UsuarioReceptorFK Int
+  usuarioDonante    Usuario  @relation("DonacionesEnviadas", fields: [UsuarioDonanteFK], references: [IdUsuario], onDelete: Cascade)
+  usuarioReceptor   Usuario  @relation("DonacionesRecibidas", fields: [UsuarioReceptorFK], references: [IdUsuario], onDelete: Cascade)
+  fechaCreacion     DateTime @default(now())
+}
