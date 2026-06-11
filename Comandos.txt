@@ -1,4 +1,4 @@
-http://localhost:3000/usuario:
+http://localhost:3000/usuarios:
 {
   "nombre": "Darwin",
   "edad": 22,
@@ -54,3 +54,40 @@ GET http://localhost:3000/suscripciones:
   "PlanSuscripcionFK": 1,
   "activa": true
 }
+
+POST http://localhost:3000/restricciones:
+{
+  "descripcion": "Solo usuarios Gold pueden enviar mensajes ilimitados",
+  "activa": true,
+  "PlanSuscripcionFK": 1
+}
+
+POST http://localhost:3000/usuarios:
+{
+  "nombre": "Ana",
+  "edad": 21,
+  "genero": "FEMENINO",
+  "correo": "ana@test.com",
+  "numero": "0988888888",
+  "biografia": "Estudiante universitaria",
+  "nacionalidad": "Ecuatoriana",
+  "queBusca": "Conocer personas",
+  "hobby": "Música",
+  "dedicacion": "Estudiante"
+}
+
+POST http://localhost:3000/interacciones:
+{
+  "tipo": "LIKE",
+  "UsuarioOrigenFK": 1,
+  "UsuarioDestinoFK": 3
+}
+
+{
+  "tipo": "LIKE",
+  "UsuarioOrigenFK": 3,
+  "UsuarioDestinoFK": 1
+}
+
+GET http://localhost:3000/matches:
+
