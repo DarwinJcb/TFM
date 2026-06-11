@@ -1,5 +1,5 @@
 /* src/interacciones/dto/update-interaccion.dto.ts: */
 import { PartialType } from '@nestjs/mapped-types';
-import { CreateInteraccioneDto } from './create-interaccion.dto';
+import { CreateInteraccionDto } from './create-interaccion.dto.js';
 
-export class UpdateInteraccioneDto extends PartialType(CreateInteraccioneDto) { }
+export class UpdateInteraccionDto extends PartialType(CreateInteraccionDto) { }

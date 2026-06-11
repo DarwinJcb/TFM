@@ -1,2 +1,2 @@
 /* src/interacciones/entities/interaccion.entity.ts: */
-export class Interaccione { }
+export class Interaccion { }

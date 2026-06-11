@@ -1,16 +1,16 @@
 /* src/interacciones/interacciones.controller.ts: */
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
 import { InteraccionesService } from './interacciones.service';
-import { CreateInteraccioneDto } from './dto/create-interaccion.dto';
-import { UpdateInteraccioneDto } from './dto/update-interaccion.dto';
+import { CreateInteraccionDto } from './dto/create-interaccion.dto';
+import { UpdateInteraccionDto } from './dto/update-interaccion.dto';
 
 @Controller('interacciones')
 export class InteraccionesController {
   constructor(private readonly interaccionesService: InteraccionesService) { }
 
   @Post()
-  create(@Body() createInteraccioneDto: CreateInteraccioneDto) {
-    return this.interaccionesService.create(createInteraccioneDto);
+  create(@Body() createInteraccionDto: CreateInteraccionDto) {
+    return this.interaccionesService.create(createInteraccionDto);
   }
 
   @Get()
@@ -24,7 +24,7 @@ export class InteraccionesController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateInteraccioneDto: UpdateInteraccioneDto) {
+  update(@Param('id') id: string, @Body() updateInteraccioneDto: UpdateInteraccionDto) {
     return this.interaccionesService.update(+id, updateInteraccioneDto);
   }
 
