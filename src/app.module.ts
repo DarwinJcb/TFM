@@ -6,9 +6,10 @@ import { PrismaModule } from './prisma/prisma.module';
 import { UsuariosModule } from './usuarios/usuarios.module.js';
 import { UbicacionesModule } from './ubicaciones/ubicaciones.module.js';
 import { FotosModule } from './fotos/fotos.module';
+import { MusicasModule } from './musicas/musicas.module';
 
 @Module({
-  imports: [PrismaModule, UsuariosModule, UbicacionesModule, FotosModule],
+  imports: [PrismaModule, UsuariosModule, UbicacionesModule, FotosModule, MusicasModule],
   controllers: [AppController],
   providers: [AppService],
 })
