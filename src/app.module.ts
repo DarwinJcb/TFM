@@ -14,9 +14,10 @@ import { InteraccionesModule } from './interacciones/interacciones.module';
 import { MatchesModule } from './matches/matches.module';
 import { ChatsModule } from './chats/chats.module';
 import { MensajesModule } from './mensajes/mensajes.module';
+import { CondicionesComunicacionModule } from './condiciones-comunicacion/condiciones-comunicacion.module';
 
 @Module({
-  imports: [PrismaModule, UsuariosModule, UbicacionesModule, FotosModule, MusicasModule, PlanesSuscripcionModule, SuscripcionesModule, RestriccionesModule, InteraccionesModule, MatchesModule, ChatsModule, MensajesModule],
+  imports: [PrismaModule, UsuariosModule, UbicacionesModule, FotosModule, MusicasModule, PlanesSuscripcionModule, SuscripcionesModule, RestriccionesModule, InteraccionesModule, MatchesModule, ChatsModule, MensajesModule, CondicionesComunicacionModule],
   controllers: [AppController],
   providers: [AppService],
 })
