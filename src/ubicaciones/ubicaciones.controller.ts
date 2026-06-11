@@ -1,6 +1,6 @@
-/* src/ubicaciones/ubicacion.controller.ts: */
+/* src/ubicaciones/ubicaciones.controller.ts: */
 import { Controller, Get, Post, Body, Patch, Param, Delete, } from '@nestjs/common';
-import { UbicacionesService } from './ubicacion.service.js';
+import { UbicacionesService } from './ubicaciones.service.js';
 import { CreateUbicacionDto } from './dto/create-ubicacion.dto.js';
 import { UpdateUbicacionDto } from './dto/update-ubicacion.dto.js';
 

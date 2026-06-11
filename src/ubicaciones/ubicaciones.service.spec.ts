@@ -1,14 +1,16 @@
-/* src/usuarios/usuario.controller.spec.ts: */
+/* src/ubicaciones/ubicaciones.service.spec.ts: */
 import { Test, TestingModule } from '@nestjs/testing';
-import { UsuariosController } from './usuario.controller.js';
-import { UsuariosService } from './usuario.service.js';
+import { UbicacionesService } from './ubicaciones.service.js';
 import { PrismaService } from '../prisma/prisma.service.js';
 
-describe('UsuariosController', () => {
-  let controller: UsuariosController;
+describe('UbicacionesService', () => {
+  let service: UbicacionesService;
 
   const prismaMock = {
     usuario: {
+      findUnique: jest.fn(),
+    },
+    ubicacion: {
       create: jest.fn(),
       findMany: jest.fn(),
       findUnique: jest.fn(),
@@ -19,9 +21,8 @@ describe('UsuariosController', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      controllers: [UsuariosController],
       providers: [
-        UsuariosService,
+        UbicacionesService,
         {
           provide: PrismaService,
           useValue: prismaMock,
@@ -29,10 +30,10 @@ describe('UsuariosController', () => {
       ],
     }).compile();
 
-    controller = module.get<UsuariosController>(UsuariosController);
+    service = module.get<UbicacionesService>(UbicacionesService);
   });
 
   it('should be defined', () => {
-    expect(controller).toBeDefined();
+    expect(service).toBeDefined();
   });
 });

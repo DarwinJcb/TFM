@@ -1,6 +1,6 @@
-/* src/usuarios/usuario.service.spec.ts: */
+/* src/usuarios/usuarios.service.spec.ts: */
 import { Test, TestingModule } from '@nestjs/testing';
-import { UsuariosService } from './usuario.service.js';
+import { UsuariosService } from './usuarios.service.js';
 import { PrismaService } from '../prisma/prisma.service.js';
 
 describe('UsuariosService', () => {

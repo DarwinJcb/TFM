@@ -1,10 +1,11 @@
-/* src/ubicaciones/ubicacion.service.spec.ts: */
+/* src/ubicaciones/ubicaciones.controller.spec.ts: */
 import { Test, TestingModule } from '@nestjs/testing';
-import { UbicacionesService } from './ubicacion.service.js';
+import { UbicacionesController } from './ubicaciones.controller.js';
+import { UbicacionesService } from './ubicaciones.service.js';
 import { PrismaService } from '../prisma/prisma.service.js';
 
-describe('UbicacionesService', () => {
-  let service: UbicacionesService;
+describe('UbicacionesController', () => {
+  let controller: UbicacionesController;
 
   const prismaMock = {
     usuario: {
@@ -21,6 +22,7 @@ describe('UbicacionesService', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
+      controllers: [UbicacionesController],
       providers: [
         UbicacionesService,
         {
@@ -30,10 +32,10 @@ describe('UbicacionesService', () => {
       ],
     }).compile();
 
-    service = module.get<UbicacionesService>(UbicacionesService);
+    controller = module.get<UbicacionesController>(UbicacionesController);
   });
 
   it('should be defined', () => {
-    expect(service).toBeDefined();
+    expect(controller).toBeDefined();
   });
 });

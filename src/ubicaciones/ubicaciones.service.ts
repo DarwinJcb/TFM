@@ -1,4 +1,4 @@
-/* src/ubicaciones/ubicacion.service.ts: */
+/* src/ubicaciones/ubicaciones.service.ts: */
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service.js';
 import { CreateUbicacionDto } from './dto/create-ubicacion.dto.js';

@@ -1,7 +1,7 @@
-/* src/ubicaciones/ubicacion.module.ts: */
+/* src/ubicaciones/ubicaciones.module.ts: */
 import { Module } from '@nestjs/common';
-import { UbicacionesService } from './ubicacion.service.js';
-import { UbicacionesController } from './ubicacion.controller.js';
+import { UbicacionesService } from './ubicaciones.service.js';
+import { UbicacionesController } from './ubicaciones.controller.js';
 import { PrismaModule } from '../prisma/prisma.module.js';
 
 @Module({

@@ -1,6 +1,6 @@
-/* src/usuarios/usuario.module.ts: */
+/* src/usuarios/usuarios.module.ts: */
 import { Module } from '@nestjs/common';
-import { UsuariosService } from './usuario.service.js';
+import { UsuariosService } from './usuarios.service.js';
 import { UsuariosController } from './usuario.controller.js';
 import { PrismaModule } from '../prisma/prisma.module.js';
 
