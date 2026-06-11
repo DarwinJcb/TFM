@@ -120,6 +120,10 @@ POST http://localhost:3000/condiciones-comunicacion:
   "UsuarioFK": 1
 }
 
-
-
+POST http://localhost:3000/estados-actividad:
+{
+  "estaActivo": true,
+  "enLive": false,
+  "UsuarioFK": 1
+}
 
