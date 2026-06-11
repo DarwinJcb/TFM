@@ -7,9 +7,10 @@ import { UsuariosModule } from './usuarios/usuarios.module.js';
 import { UbicacionesModule } from './ubicaciones/ubicaciones.module.js';
 import { FotosModule } from './fotos/fotos.module';
 import { MusicasModule } from './musicas/musicas.module';
+import { PlanesSuscripcionModule } from './planes-suscripcion/planes-suscripcion.module';
 
 @Module({
-  imports: [PrismaModule, UsuariosModule, UbicacionesModule, FotosModule, MusicasModule],
+  imports: [PrismaModule, UsuariosModule, UbicacionesModule, FotosModule, MusicasModule, PlanesSuscripcionModule],
   controllers: [AppController],
   providers: [AppService],
 })

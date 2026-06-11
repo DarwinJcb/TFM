@@ -22,3 +22,20 @@ http://localhost:3000/ubicaciones:
   "descripcion": "Ubicación principal",
   "UsuarioFK": 1
 }
+
+POST http://localhost:3000/fotos:
+{
+  "urlFoto": "https://ejemplo.com/foto1.jpg",
+  "descripcion": "Foto principal del perfil",
+  "UsuarioFK": 1
+}
+
+POST http://localhost:3000/musicas:
+{
+  "nombreCancion": "Blinding Lights",
+  "tipoMusica": "Pop",
+  "UsuarioFK": 1
+}
+
+
+
