@@ -1,8 +1,8 @@
 /* src/matches/matches.controller.ts: */
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-import { MatchesService } from './matches.service';
-import { CreateMatchDto } from './dto/create-match.dto';
-import { UpdateMatchDto } from './dto/update-match.dto';
+import { Controller, Get, Post, Body, Patch, Param, Delete, } from '@nestjs/common';
+import { MatchesService } from './matches.service.js';
+import { CreateMatchDto } from './dto/create-match.dto.js';
+import { UpdateMatchDto } from './dto/update-match.dto.js';
 
 @Controller('matches')
 export class MatchesController {
