@@ -1,27 +1,106 @@
 /* src/condiciones-comunicacion/condiciones-comunicacion.service.ts: */
-import { Injectable } from '@nestjs/common';
-import { CreateCondicionesComunicacionDto } from './dto/create-condiciones-comunicacion.dto';
-import { UpdateCondicionesComunicacionDto } from './dto/update-condiciones-comunicacion.dto';
+import { ConflictException, Injectable, NotFoundException, } from '@nestjs/common';
+import { PrismaService } from '../prisma/prisma.service.js';
+import { CreateCondicionComunicacionDto } from './dto/create-condicion-comunicacion.dto.js';
+import { UpdateCondicionComunicacionDto } from './dto/update-condicion-comunicacion.dto.js';
 
 @Injectable()
 export class CondicionesComunicacionService {
-  create(createCondicionesComunicacionDto: CreateCondicionesComunicacionDto) {
-    return 'This action adds a new condicionesComunicacion';
+  constructor(private readonly prisma: PrismaService) { }
+
+  private async verificarUsuarioExiste(UsuarioFK: number) {
+    const usuario = await this.prisma.usuario.findUnique({
+      where: {
+        IdUsuario: UsuarioFK,
+      },
+    });
+
+    if (!usuario) {
+      throw new NotFoundException(`Usuario con ID ${UsuarioFK} no encontrado`);
+    }
+
+    return usuario;
+  }
+
+  async create(createCondicionComunicacionDto: CreateCondicionComunicacionDto) {
+    await this.verificarUsuarioExiste(createCondicionComunicacionDto.UsuarioFK);
+
+    const condicionExistente =
+      await this.prisma.condicionComunicacion.findUnique({
+        where: {
+          UsuarioFK: createCondicionComunicacionDto.UsuarioFK,
+        },
+      });
+
+    if (condicionExistente) {
+      throw new ConflictException(
+        `El usuario con ID ${createCondicionComunicacionDto.UsuarioFK} ya tiene condiciones de comunicación`,
+      );
+    }
+
+    return this.prisma.condicionComunicacion.create({
+      data: createCondicionComunicacionDto,
+      include: {
+        usuario: true,
+      },
+    });
   }
 
   findAll() {
-    return `This action returns all condicionesComunicacion`;
+    return this.prisma.condicionComunicacion.findMany({
+      include: {
+        usuario: true,
+      },
+    });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} condicionesComunicacion`;
+  async findOne(id: number) {
+    const condicion = await this.prisma.condicionComunicacion.findUnique({
+      where: {
+        IdCondicionComunicacion: id,
+      },
+      include: {
+        usuario: true,
+      },
+    });
+
+    if (!condicion) {
+      throw new NotFoundException(
+        `Condición de comunicación con ID ${id} no encontrada`,
+      );
+    }
+
+    return condicion;
   }
 
-  update(id: number, updateCondicionesComunicacionDto: UpdateCondicionesComunicacionDto) {
-    return `This action updates a #${id} condicionesComunicacion`;
+  async update(
+    id: number,
+    updateCondicionComunicacionDto: UpdateCondicionComunicacionDto,
+  ) {
+    await this.findOne(id);
+
+    if (updateCondicionComunicacionDto.UsuarioFK !== undefined) {
+      await this.verificarUsuarioExiste(updateCondicionComunicacionDto.UsuarioFK);
+    }
+
+    return this.prisma.condicionComunicacion.update({
+      where: {
+        IdCondicionComunicacion: id,
+      },
+      data: updateCondicionComunicacionDto,
+      include: {
+        usuario: true,
+      },
+    });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} condicionesComunicacion`;
+  async remove(id: number) {
+    await this.findOne(id);
+
+    return this.prisma.condicionComunicacion.delete({
+      where: {
+        IdCondicionComunicacion: id,
+      },
+    });
   }
 }

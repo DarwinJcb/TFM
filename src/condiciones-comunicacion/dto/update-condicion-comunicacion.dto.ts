@@ -1,5 +1,7 @@
 /* src/condiciones-comunicacion/dto/update-condicion-comunicacion.dto.ts: */
 import { PartialType } from '@nestjs/mapped-types';
-import { CreateCondicionesComunicacionDto } from './create-condicion-comunicacion.dto';
+import { CreateCondicionComunicacionDto } from './create-condicion-comunicacion.dto.js';
 
-export class UpdateCondicionesComunicacionDto extends PartialType(CreateCondicionesComunicacionDto) { }
+export class UpdateCondicionComunicacionDto extends PartialType(
+    CreateCondicionComunicacionDto,
+) { }

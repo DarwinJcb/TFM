@@ -1,16 +1,28 @@
 /* src/condiciones-comunicacion/condiciones-comunicacion.controller.ts: */
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-import { CondicionesComunicacionService } from './condiciones-comunicacion.service';
-import { CreateCondicionesComunicacionDto } from './dto/create-condiciones-comunicacion.dto';
-import { UpdateCondicionesComunicacionDto } from './dto/update-condiciones-comunicacion.dto';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
+import { CondicionesComunicacionService } from './condiciones-comunicacion.service.js';
+import { CreateCondicionComunicacionDto } from './dto/create-condicion-comunicacion.dto.js';
+import { UpdateCondicionComunicacionDto } from './dto/update-condicion-comunicacion.dto.js';
 
 @Controller('condiciones-comunicacion')
 export class CondicionesComunicacionController {
-  constructor(private readonly condicionesComunicacionService: CondicionesComunicacionService) { }
+  constructor(
+    private readonly condicionesComunicacionService: CondicionesComunicacionService,
+  ) { }
 
   @Post()
-  create(@Body() createCondicionesComunicacionDto: CreateCondicionesComunicacionDto) {
-    return this.condicionesComunicacionService.create(createCondicionesComunicacionDto);
+  create(@Body() createCondicionComunicacionDto: CreateCondicionComunicacionDto) {
+    return this.condicionesComunicacionService.create(
+      createCondicionComunicacionDto,
+    );
   }
 
   @Get()
@@ -24,8 +36,14 @@ export class CondicionesComunicacionController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateCondicionesComunicacionDto: UpdateCondicionesComunicacionDto) {
-    return this.condicionesComunicacionService.update(+id, updateCondicionesComunicacionDto);
+  update(
+    @Param('id') id: string,
+    @Body() updateCondicionComunicacionDto: UpdateCondicionComunicacionDto,
+  ) {
+    return this.condicionesComunicacionService.update(
+      +id,
+      updateCondicionComunicacionDto,
+    );
   }
 
   @Delete(':id')
