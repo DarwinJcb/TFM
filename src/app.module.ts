@@ -11,9 +11,10 @@ import { PlanesSuscripcionModule } from './planes-suscripcion/planes-suscripcion
 import { SuscripcionesModule } from './suscripciones/suscripciones.module';
 import { RestriccionesModule } from './restricciones/restricciones.module';
 import { InteraccionesModule } from './interacciones/interacciones.module';
+import { MatchesModule } from './matches/matches.module';
 
 @Module({
-  imports: [PrismaModule, UsuariosModule, UbicacionesModule, FotosModule, MusicasModule, PlanesSuscripcionModule, SuscripcionesModule, RestriccionesModule, InteraccionesModule],
+  imports: [PrismaModule, UsuariosModule, UbicacionesModule, FotosModule, MusicasModule, PlanesSuscripcionModule, SuscripcionesModule, RestriccionesModule, InteraccionesModule, MatchesModule],
   controllers: [AppController],
   providers: [AppService],
 })
