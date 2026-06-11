@@ -1,3 +1,4 @@
+/* src/condiciones-comunicacion/condiciones-comunicacion.controller.ts: */
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
 import { CondicionesComunicacionService } from './condiciones-comunicacion.service';
 import { CreateCondicionesComunicacionDto } from './dto/create-condiciones-comunicacion.dto';
@@ -5,7 +6,7 @@ import { UpdateCondicionesComunicacionDto } from './dto/update-condiciones-comun
 
 @Controller('condiciones-comunicacion')
 export class CondicionesComunicacionController {
-  constructor(private readonly condicionesComunicacionService: CondicionesComunicacionService) {}
+  constructor(private readonly condicionesComunicacionService: CondicionesComunicacionService) { }
 
   @Post()
   create(@Body() createCondicionesComunicacionDto: CreateCondicionesComunicacionDto) {

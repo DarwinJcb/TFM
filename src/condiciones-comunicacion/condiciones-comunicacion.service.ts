@@ -1,3 +1,4 @@
+/* src/condiciones-comunicacion/condiciones-comunicacion.service.ts: */
 import { Injectable } from '@nestjs/common';
 import { CreateCondicionesComunicacionDto } from './dto/create-condiciones-comunicacion.dto';
 import { UpdateCondicionesComunicacionDto } from './dto/update-condiciones-comunicacion.dto';

@@ -1,3 +1,4 @@
+/* src/condiciones-comunicacion/condiciones-comunicacion.module.ts: */
 import { Module } from '@nestjs/common';
 import { CondicionesComunicacionService } from './condiciones-comunicacion.service';
 import { CondicionesComunicacionController } from './condiciones-comunicacion.controller';
@@ -6,4 +7,4 @@ import { CondicionesComunicacionController } from './condiciones-comunicacion.co
   controllers: [CondicionesComunicacionController],
   providers: [CondicionesComunicacionService],
 })
-export class CondicionesComunicacionModule {}
+export class CondicionesComunicacionModule { }
