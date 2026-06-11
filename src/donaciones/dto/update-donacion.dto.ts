@@ -1,5 +1,5 @@
 /* src/donaciones/dto/update-donacion.dto.ts: */
 import { PartialType } from '@nestjs/mapped-types';
-import { CreateDonacioneDto } from './create-donacione.dto';
+import { CreateDonacionDto } from './create-donacion.dto.js';
 
-export class UpdateDonacioneDto extends PartialType(CreateDonacioneDto) { }
+export class UpdateDonacionDto extends PartialType(CreateDonacionDto) { }

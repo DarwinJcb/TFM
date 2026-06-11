@@ -1,16 +1,16 @@
 /* src/donaciones/donaciones.controller.ts: */
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-import { DonacionesService } from './donaciones.service';
-import { CreateDonacioneDto } from './dto/create-donacione.dto';
-import { UpdateDonacioneDto } from './dto/update-donacione.dto';
+import { Controller, Get, Post, Body, Patch, Param, Delete, } from '@nestjs/common';
+import { DonacionesService } from './donaciones.service.js';
+import { CreateDonacionDto } from './dto/create-donacion.dto.js';
+import { UpdateDonacionDto } from './dto/update-donacion.dto.js';
 
 @Controller('donaciones')
 export class DonacionesController {
   constructor(private readonly donacionesService: DonacionesService) { }
 
   @Post()
-  create(@Body() createDonacioneDto: CreateDonacioneDto) {
-    return this.donacionesService.create(createDonacioneDto);
+  create(@Body() createDonacionDto: CreateDonacionDto) {
+    return this.donacionesService.create(createDonacionDto);
   }
 
   @Get()
@@ -24,8 +24,8 @@ export class DonacionesController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateDonacioneDto: UpdateDonacioneDto) {
-    return this.donacionesService.update(+id, updateDonacioneDto);
+  update(@Param('id') id: string, @Body() updateDonacionDto: UpdateDonacionDto) {
+    return this.donacionesService.update(+id, updateDonacionDto);
   }
 
   @Delete(':id')

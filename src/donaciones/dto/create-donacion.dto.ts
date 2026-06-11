@@ -1,2 +1,7 @@
 /* src/donaciones/dto/create-donacion.dto.ts: */
-export class CreateDonacioneDto { }
+export class CreateDonacionDto {
+    monto!: string;
+    mensaje?: string;
+    UsuarioDonanteFK!: number;
+    UsuarioReceptorFK!: number;
+}
