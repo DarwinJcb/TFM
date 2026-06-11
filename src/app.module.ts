@@ -13,9 +13,10 @@ import { RestriccionesModule } from './restricciones/restricciones.module';
 import { InteraccionesModule } from './interacciones/interacciones.module';
 import { MatchesModule } from './matches/matches.module';
 import { ChatsModule } from './chats/chats.module';
+import { MensajesModule } from './mensajes/mensajes.module';
 
 @Module({
-  imports: [PrismaModule, UsuariosModule, UbicacionesModule, FotosModule, MusicasModule, PlanesSuscripcionModule, SuscripcionesModule, RestriccionesModule, InteraccionesModule, MatchesModule, ChatsModule],
+  imports: [PrismaModule, UsuariosModule, UbicacionesModule, FotosModule, MusicasModule, PlanesSuscripcionModule, SuscripcionesModule, RestriccionesModule, InteraccionesModule, MatchesModule, ChatsModule, MensajesModule],
   controllers: [AppController],
   providers: [AppService],
 })
