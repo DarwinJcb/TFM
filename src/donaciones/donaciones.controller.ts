@@ -1,3 +1,4 @@
+/* src/donaciones/donaciones.controller.ts: */
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
 import { DonacionesService } from './donaciones.service';
 import { CreateDonacioneDto } from './dto/create-donacione.dto';
@@ -5,7 +6,7 @@ import { UpdateDonacioneDto } from './dto/update-donacione.dto';
 
 @Controller('donaciones')
 export class DonacionesController {
-  constructor(private readonly donacionesService: DonacionesService) {}
+  constructor(private readonly donacionesService: DonacionesService) { }
 
   @Post()
   create(@Body() createDonacioneDto: CreateDonacioneDto) {

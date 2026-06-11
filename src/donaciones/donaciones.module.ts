@@ -1,3 +1,4 @@
+/* src/donaciones/donaciones.module.ts: */
 import { Module } from '@nestjs/common';
 import { DonacionesService } from './donaciones.service';
 import { DonacionesController } from './donaciones.controller';
@@ -6,4 +7,4 @@ import { DonacionesController } from './donaciones.controller';
   controllers: [DonacionesController],
   providers: [DonacionesService],
 })
-export class DonacionesModule {}
+export class DonacionesModule { }
