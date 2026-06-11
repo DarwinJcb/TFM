@@ -1,16 +1,18 @@
 /* src/planes-suscripcion/planes-suscripcion.controller.ts: */
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-import { PlanesSuscripcionService } from './planes-suscripcion.service';
-import { CreatePlanSuscripcionDto } from './dto/create-plan-suscripcion.dto';
-import { UpdatePlanesSuscripcionDto } from './dto/update-plan-suscripcion.dto';
+import { Controller, Get, Post, Body, Patch, Param, Delete, } from '@nestjs/common';
+import { PlanesSuscripcionService } from './planes-suscripcion.service.js';
+import { CreatePlanSuscripcionDto } from './dto/create-plan-suscripcion.dto.js';
+import { UpdatePlanSuscripcionDto } from './dto/update-plan-suscripcion.dto.js';
 
 @Controller('planes-suscripcion')
 export class PlanesSuscripcionController {
-  constructor(private readonly planesSuscripcionService: PlanesSuscripcionService) { }
+  constructor(
+    private readonly planesSuscripcionService: PlanesSuscripcionService,
+  ) { }
 
   @Post()
-  create(@Body() createPlanesSuscripcionDto: CreatePlanSuscripcionDto) {
-    return this.planesSuscripcionService.create(createPlanesSuscripcionDto);
+  create(@Body() createPlanSuscripcionDto: CreatePlanSuscripcionDto) {
+    return this.planesSuscripcionService.create(createPlanSuscripcionDto);
   }
 
   @Get()
@@ -24,8 +26,14 @@ export class PlanesSuscripcionController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updatePlanesSuscripcionDto: UpdatePlanesSuscripcionDto) {
-    return this.planesSuscripcionService.update(+id, updatePlanesSuscripcionDto);
+  update(
+    @Param('id') id: string,
+    @Body() updatePlanSuscripcionDto: UpdatePlanSuscripcionDto,
+  ) {
+    return this.planesSuscripcionService.update(
+      +id,
+      updatePlanSuscripcionDto,
+    );
   }
 
   @Delete(':id')

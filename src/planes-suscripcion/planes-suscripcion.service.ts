@@ -1,27 +1,69 @@
 /* src/planes-suscripcion/planes-suscripcion.service.ts: */
-import { Injectable } from '@nestjs/common';
-import { CreatePlanSuscripcionDto } from './dto/create-plan-suscripcion.dto';
-import { UpdatePlanesSuscripcionDto } from './dto/update-plan-suscripcion.dto';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { PrismaService } from '../prisma/prisma.service.js';
+import { CreatePlanSuscripcionDto } from './dto/create-plan-suscripcion.dto.js';
+import { UpdatePlanSuscripcionDto } from './dto/update-plan-suscripcion.dto.js';
 
 @Injectable()
 export class PlanesSuscripcionService {
-  create(createPlanesSuscripcionDto: CreatePlanSuscripcionDto) {
-    return 'This action adds a new planesSuscripcion';
+  constructor(private readonly prisma: PrismaService) { }
+
+  create(createPlanSuscripcionDto: CreatePlanSuscripcionDto) {
+    return this.prisma.planSuscripcion.create({
+      data: createPlanSuscripcionDto,
+    });
   }
 
   findAll() {
-    return `This action returns all planesSuscripcion`;
+    return this.prisma.planSuscripcion.findMany({
+      include: {
+        restricciones: true,
+        suscripciones: true,
+      },
+    });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} planesSuscripcion`;
+  async findOne(id: number) {
+    const plan = await this.prisma.planSuscripcion.findUnique({
+      where: {
+        IdPlanSuscripcion: id,
+      },
+      include: {
+        restricciones: true,
+        suscripciones: true,
+      },
+    });
+
+    if (!plan) {
+      throw new NotFoundException(
+        `Plan de suscripción con ID ${id} no encontrado`,
+      );
+    }
+
+    return plan;
   }
 
-  update(id: number, updatePlanesSuscripcionDto: UpdatePlanesSuscripcionDto) {
-    return `This action updates a #${id} planesSuscripcion`;
+  async update(
+    id: number,
+    updatePlanSuscripcionDto: UpdatePlanSuscripcionDto,
+  ) {
+    await this.findOne(id);
+
+    return this.prisma.planSuscripcion.update({
+      where: {
+        IdPlanSuscripcion: id,
+      },
+      data: updatePlanSuscripcionDto,
+    });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} planesSuscripcion`;
+  async remove(id: number) {
+    await this.findOne(id);
+
+    return this.prisma.planSuscripcion.delete({
+      where: {
+        IdPlanSuscripcion: id,
+      },
+    });
   }
 }
