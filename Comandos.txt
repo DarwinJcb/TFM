@@ -89,5 +89,28 @@ POST http://localhost:3000/interacciones:
   "UsuarioDestinoFK": 1
 }
 
-GET http://localhost:3000/matches:
+GET http://localhost:3000/matches
+
+POST http://localhost:3000/chats:
+{
+  "UsuarioUnoFK": 1,
+  "UsuarioDosFK": 3,
+  "MatchFK": 1
+}
+
+POST http://localhost:3000/mensajes:
+{
+  "contenido": "Hola Ana, ¿cómo estás?",
+  "ChatFK": 1,
+  "UsuarioFK": 1
+}
+
+POST http://localhost:3000/mensajes:
+{
+  "contenido": "Hola Darwin, estoy bien",
+  "ChatFK": 1,
+  "UsuarioFK": 3
+}
+
+
 
