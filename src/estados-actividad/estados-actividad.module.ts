@@ -1,3 +1,4 @@
+/* src/estados-actividad/estados-actividad.module.ts: */
 import { Module } from '@nestjs/common';
 import { EstadosActividadService } from './estados-actividad.service';
 import { EstadosActividadController } from './estados-actividad.controller';
@@ -6,4 +7,4 @@ import { EstadosActividadController } from './estados-actividad.controller';
   controllers: [EstadosActividadController],
   providers: [EstadosActividadService],
 })
-export class EstadosActividadModule {}
+export class EstadosActividadModule { }

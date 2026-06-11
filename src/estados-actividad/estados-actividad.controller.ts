@@ -1,3 +1,4 @@
+/* src/estados-actividad/estados-actividad.controller.ts: */
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
 import { EstadosActividadService } from './estados-actividad.service';
 import { CreateEstadosActividadDto } from './dto/create-estados-actividad.dto';
@@ -5,7 +6,7 @@ import { UpdateEstadosActividadDto } from './dto/update-estados-actividad.dto';
 
 @Controller('estados-actividad')
 export class EstadosActividadController {
-  constructor(private readonly estadosActividadService: EstadosActividadService) {}
+  constructor(private readonly estadosActividadService: EstadosActividadService) { }
 
   @Post()
   create(@Body() createEstadosActividadDto: CreateEstadosActividadDto) {

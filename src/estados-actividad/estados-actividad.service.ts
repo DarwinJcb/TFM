@@ -1,3 +1,4 @@
+/* src/estados-actividad/estados-actividad.service.ts: */
 import { Injectable } from '@nestjs/common';
 import { CreateEstadosActividadDto } from './dto/create-estados-actividad.dto';
 import { UpdateEstadosActividadDto } from './dto/update-estados-actividad.dto';
