@@ -1,0 +1,16 @@
+http://localhost:3000/usuario:
+{
+  "nombre": "Darwin",
+  "edad": 22,
+  "genero": "MASCULINO",
+  "correo": "darwin@test.com",
+  "numero": "0999999999",
+  "biografia": "Estudiante de Desarrollo de Software",
+  "peso": 70.5,
+  "altura": 1.75,
+  "nacionalidad": "Ecuatoriana",
+  "signoZodiacal": "Leo",
+  "queBusca": "Conocer personas",
+  "hobby": "Programar",
+  "dedicacion": "Estudiante"
+}
