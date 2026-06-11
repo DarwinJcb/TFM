@@ -1,8 +1,8 @@
 /* src/restricciones/restricciones.controller.ts: */
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-import { RestriccionesService } from './restricciones.service';
-import { CreateRestriccionDto } from './dto/create-restriccion.dto';
-import { UpdateRestriccionDto } from './dto/update-restriccion.dto';
+import { Controller, Get, Post, Body, Patch, Param, Delete, } from '@nestjs/common';
+import { RestriccionesService } from './restricciones.service.js';
+import { CreateRestriccionDto } from './dto/create-restriccion.dto.js';
+import { UpdateRestriccionDto } from './dto/update-restriccion.dto.js';
 
 @Controller('restricciones')
 export class RestriccionesController {
@@ -24,7 +24,10 @@ export class RestriccionesController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateRestriccionDto: UpdateRestriccionDto) {
+  update(
+    @Param('id') id: string,
+    @Body() updateRestriccionDto: UpdateRestriccionDto,
+  ) {
     return this.restriccionesService.update(+id, updateRestriccionDto);
   }
 
