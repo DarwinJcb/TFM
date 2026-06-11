@@ -1,13 +1,5 @@
 /* src/condiciones-comunicacion/condiciones-comunicacion.controller.ts: */
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete,
-} from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, } from '@nestjs/common';
 import { CondicionesComunicacionService } from './condiciones-comunicacion.service.js';
 import { CreateCondicionComunicacionDto } from './dto/create-condicion-comunicacion.dto.js';
 import { UpdateCondicionComunicacionDto } from './dto/update-condicion-comunicacion.dto.js';

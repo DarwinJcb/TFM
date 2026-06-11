@@ -112,5 +112,14 @@ POST http://localhost:3000/mensajes:
   "UsuarioFK": 3
 }
 
+POST http://localhost:3000/condiciones-comunicacion:
+{
+  "permiteMensajes": true,
+  "requiereMatchParaChatear": true,
+  "descripcion": "Solo puede chatear cuando exista match",
+  "UsuarioFK": 1
+}
+
+
 
 
