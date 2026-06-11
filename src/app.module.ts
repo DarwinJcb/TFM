@@ -15,9 +15,10 @@ import { MatchesModule } from './matches/matches.module';
 import { ChatsModule } from './chats/chats.module';
 import { MensajesModule } from './mensajes/mensajes.module';
 import { CondicionesComunicacionModule } from './condiciones-comunicacion/condiciones-comunicacion.module';
+import { EstadosActividadModule } from './estados-actividad/estados-actividad.module';
 
 @Module({
-  imports: [PrismaModule, UsuariosModule, UbicacionesModule, FotosModule, MusicasModule, PlanesSuscripcionModule, SuscripcionesModule, RestriccionesModule, InteraccionesModule, MatchesModule, ChatsModule, MensajesModule, CondicionesComunicacionModule],
+  imports: [PrismaModule, UsuariosModule, UbicacionesModule, FotosModule, MusicasModule, PlanesSuscripcionModule, SuscripcionesModule, RestriccionesModule, InteraccionesModule, MatchesModule, ChatsModule, MensajesModule, CondicionesComunicacionModule, EstadosActividadModule],
   controllers: [AppController],
   providers: [AppService],
 })
