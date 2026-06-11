@@ -38,4 +38,19 @@ POST http://localhost:3000/musicas:
 }
 
 
+POST http://localhost:3000/planes-suscripcion:
+{
+  "tipo": "GOLD",
+  "valor": "9.99",
+  "ventajas": "Mayor visibilidad",
+  "contenido": "Acceso a beneficios Gold",
+  "mensajesIlimitados": true
+}
 
+
+GET http://localhost:3000/suscripciones:
+{
+  "UsuarioFK": 1,
+  "PlanSuscripcionFK": 1,
+  "activa": true
+}
