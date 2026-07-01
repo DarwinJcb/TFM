@@ -22,9 +22,10 @@ import { PrismaUsuariosModule } from './prisma/prisma-usuarios.module';
 import { PrismaComercialService } from './prisma/prisma-comercial.service';
 import { PrismaComercialModule } from './prisma/prisma-comercial.module';
 import { PrismaInteraccionesModule } from './prisma/prisma-interacciones.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
-  imports: [PrismaModule, UsuariosModule, UbicacionesModule, FotosModule, MusicasModule, PlanesSuscripcionModule, SuscripcionesModule, RestriccionesModule, InteraccionesModule, MatchesModule, ChatsModule, MensajesModule, CondicionesComunicacionModule, EstadosActividadModule, DonacionesModule, PrismaUsuariosModule, PrismaComercialModule, PrismaInteraccionesModule],
+  imports: [PrismaModule, UsuariosModule, UbicacionesModule, FotosModule, MusicasModule, PlanesSuscripcionModule, SuscripcionesModule, RestriccionesModule, InteraccionesModule, MatchesModule, ChatsModule, MensajesModule, CondicionesComunicacionModule, EstadosActividadModule, DonacionesModule, PrismaUsuariosModule, PrismaComercialModule, PrismaInteraccionesModule, AuthModule],
   controllers: [AppController],
   providers: [AppService, PrismaUsuariosService, PrismaComercialService],
 })
