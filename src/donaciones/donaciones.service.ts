@@ -1,15 +1,21 @@
 /* src/donaciones/donaciones.service.ts: */
+// import { PrismaService } from '../prisma/prisma.service.js';
+// constructor(private readonly prisma: PrismaService) { }
 import { BadRequestException, Injectable, NotFoundException, } from '@nestjs/common';
-import { PrismaService } from '../prisma/prisma.service.js';
 import { CreateDonacionDto } from './dto/create-donacion.dto.js';
 import { UpdateDonacionDto } from './dto/update-donacion.dto.js';
+import { PrismaComercialService } from '../prisma/prisma-comercial.service.js';
+import { PrismaUsuariosService } from '../prisma/prisma-usuarios.service.js';
 
 @Injectable()
 export class DonacionesService {
-  constructor(private readonly prisma: PrismaService) { }
+  constructor(
+    private readonly prisma: PrismaComercialService,
+    private readonly prismaUsuarios: PrismaUsuariosService,
+  ) { }
 
   private async verificarUsuarioExiste(idUsuario: number, nombreCampo: string) {
-    const usuario = await this.prisma.usuario.findUnique({
+    const usuario = await this.prismaUsuarios.usuario.findUnique({
       where: {
         IdUsuario: idUsuario,
       },
@@ -53,30 +59,17 @@ export class DonacionesService {
 
     return this.prisma.donacion.create({
       data: createDonacionDto,
-      include: {
-        usuarioDonante: true,
-        usuarioReceptor: true,
-      },
     });
   }
 
   findAll() {
-    return this.prisma.donacion.findMany({
-      include: {
-        usuarioDonante: true,
-        usuarioReceptor: true,
-      },
-    });
+    return this.prisma.donacion.findMany();
   }
 
   async findOne(id: number) {
     const donacion = await this.prisma.donacion.findUnique({
       where: {
         IdDonacion: id,
-      },
-      include: {
-        usuarioDonante: true,
-        usuarioReceptor: true,
       },
     });
 
@@ -88,41 +81,24 @@ export class DonacionesService {
   }
 
   async update(id: number, updateDonacionDto: UpdateDonacionDto) {
-    await this.findOne(id);
+    const donacionActual = await this.findOne(id);
 
-    if (
-      updateDonacionDto.UsuarioDonanteFK !== undefined &&
-      updateDonacionDto.UsuarioReceptorFK !== undefined
-    ) {
-      this.validarUsuariosDiferentes(
-        updateDonacionDto.UsuarioDonanteFK,
-        updateDonacionDto.UsuarioReceptorFK,
-      );
-    }
+    const UsuarioDonanteFK =
+      updateDonacionDto.UsuarioDonanteFK ?? donacionActual.UsuarioDonanteFK;
 
-    if (updateDonacionDto.UsuarioDonanteFK !== undefined) {
-      await this.verificarUsuarioExiste(
-        updateDonacionDto.UsuarioDonanteFK,
-        'Usuario donante',
-      );
-    }
+    const UsuarioReceptorFK =
+      updateDonacionDto.UsuarioReceptorFK ?? donacionActual.UsuarioReceptorFK;
 
-    if (updateDonacionDto.UsuarioReceptorFK !== undefined) {
-      await this.verificarUsuarioExiste(
-        updateDonacionDto.UsuarioReceptorFK,
-        'Usuario receptor',
-      );
-    }
+    this.validarUsuariosDiferentes(UsuarioDonanteFK, UsuarioReceptorFK);
+
+    await this.verificarUsuarioExiste(UsuarioDonanteFK, 'Usuario donante');
+    await this.verificarUsuarioExiste(UsuarioReceptorFK, 'Usuario receptor');
 
     return this.prisma.donacion.update({
       where: {
         IdDonacion: id,
       },
       data: updateDonacionDto,
-      include: {
-        usuarioDonante: true,
-        usuarioReceptor: true,
-      },
     });
   }
 

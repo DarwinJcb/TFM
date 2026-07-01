@@ -1,15 +1,22 @@
 /* src/suscripciones/suscripciones.service.ts: */
+// import { PrismaService } from '../prisma/prisma.service.js';
+// constructor(private readonly prisma: PrismaService) { }
+
 import { ConflictException, Injectable, NotFoundException, } from '@nestjs/common';
-import { PrismaService } from '../prisma/prisma.service.js';
 import { CreateSuscripcionDto } from './dto/create-suscripcion.dto.js';
 import { UpdateSuscripcionDto } from './dto/update-suscripcion.dto.js';
+import { PrismaComercialService } from '../prisma/prisma-comercial.service.js';
+import { PrismaUsuariosService } from '../prisma/prisma-usuarios.service.js';
 
 @Injectable()
 export class SuscripcionesService {
-  constructor(private readonly prisma: PrismaService) { }
+  constructor(
+    private readonly prisma: PrismaComercialService,
+    private readonly prismaUsuarios: PrismaUsuariosService,
+  ) { }
 
   private async verificarUsuarioExiste(UsuarioFK: number) {
-    const usuario = await this.prisma.usuario.findUnique({
+    const usuario = await this.prismaUsuarios.usuario.findUnique({
       where: {
         IdUsuario: UsuarioFK,
       },
@@ -64,7 +71,6 @@ export class SuscripcionesService {
         activa: createSuscripcionDto.activa,
       },
       include: {
-        usuario: true,
         planSuscripcion: true,
       },
     });
@@ -73,7 +79,6 @@ export class SuscripcionesService {
   findAll() {
     return this.prisma.suscripcion.findMany({
       include: {
-        usuario: true,
         planSuscripcion: true,
       },
     });
@@ -85,7 +90,6 @@ export class SuscripcionesService {
         IdSuscripcion: id,
       },
       include: {
-        usuario: true,
         planSuscripcion: true,
       },
     });
@@ -98,14 +102,31 @@ export class SuscripcionesService {
   }
 
   async update(id: number, updateSuscripcionDto: UpdateSuscripcionDto) {
-    await this.findOne(id);
+    const suscripcionActual = await this.findOne(id);
 
-    if (updateSuscripcionDto.UsuarioFK !== undefined) {
-      await this.verificarUsuarioExiste(updateSuscripcionDto.UsuarioFK);
-    }
+    const UsuarioFK =
+      updateSuscripcionDto.UsuarioFK ?? suscripcionActual.UsuarioFK;
 
-    if (updateSuscripcionDto.PlanSuscripcionFK !== undefined) {
-      await this.verificarPlanExiste(updateSuscripcionDto.PlanSuscripcionFK);
+    const PlanSuscripcionFK =
+      updateSuscripcionDto.PlanSuscripcionFK ??
+      suscripcionActual.PlanSuscripcionFK;
+
+    await this.verificarUsuarioExiste(UsuarioFK);
+    await this.verificarPlanExiste(PlanSuscripcionFK);
+
+    const suscripcionExistente = await this.prisma.suscripcion.findUnique({
+      where: {
+        UsuarioFK,
+      },
+    });
+
+    if (
+      suscripcionExistente &&
+      suscripcionExistente.IdSuscripcion !== id
+    ) {
+      throw new ConflictException(
+        `El usuario con ID ${UsuarioFK} ya tiene una suscripción`,
+      );
     }
 
     return this.prisma.suscripcion.update({
@@ -113,15 +134,14 @@ export class SuscripcionesService {
         IdSuscripcion: id,
       },
       data: {
-        UsuarioFK: updateSuscripcionDto.UsuarioFK,
-        PlanSuscripcionFK: updateSuscripcionDto.PlanSuscripcionFK,
+        UsuarioFK,
+        PlanSuscripcionFK,
         fechaFin: updateSuscripcionDto.fechaFin
           ? new Date(updateSuscripcionDto.fechaFin)
           : undefined,
         activa: updateSuscripcionDto.activa,
       },
       include: {
-        usuario: true,
         planSuscripcion: true,
       },
     });

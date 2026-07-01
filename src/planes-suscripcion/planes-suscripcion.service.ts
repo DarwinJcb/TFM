@@ -1,12 +1,14 @@
 /* src/planes-suscripcion/planes-suscripcion.service.ts: */
+// import { PrismaService } from '../prisma/prisma.service.js';
+// constructor(private readonly prisma: PrismaService) { }
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { PrismaService } from '../prisma/prisma.service.js';
 import { CreatePlanSuscripcionDto } from './dto/create-plan-suscripcion.dto.js';
 import { UpdatePlanSuscripcionDto } from './dto/update-plan-suscripcion.dto.js';
+import { PrismaComercialService } from '../prisma/prisma-comercial.service.js';
 
 @Injectable()
 export class PlanesSuscripcionService {
-  constructor(private readonly prisma: PrismaService) { }
+  constructor(private readonly prisma: PrismaComercialService) { }
 
   create(createPlanSuscripcionDto: CreatePlanSuscripcionDto) {
     return this.prisma.planSuscripcion.create({
@@ -17,8 +19,8 @@ export class PlanesSuscripcionService {
   findAll() {
     return this.prisma.planSuscripcion.findMany({
       include: {
-        restricciones: true,
         suscripciones: true,
+        restricciones: true,
       },
     });
   }
@@ -29,8 +31,8 @@ export class PlanesSuscripcionService {
         IdPlanSuscripcion: id,
       },
       include: {
-        restricciones: true,
         suscripciones: true,
+        restricciones: true,
       },
     });
 
@@ -43,10 +45,7 @@ export class PlanesSuscripcionService {
     return plan;
   }
 
-  async update(
-    id: number,
-    updatePlanSuscripcionDto: UpdatePlanSuscripcionDto,
-  ) {
+  async update(id: number, updatePlanSuscripcionDto: UpdatePlanSuscripcionDto) {
     await this.findOne(id);
 
     return this.prisma.planSuscripcion.update({

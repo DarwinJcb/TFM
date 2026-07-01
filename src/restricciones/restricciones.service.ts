@@ -1,12 +1,14 @@
 /* src/restricciones/restricciones.service.ts: */
+// import { PrismaService } from '../prisma/prisma.service.js';
+// constructor(private readonly prisma: PrismaService) { }
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { PrismaService } from '../prisma/prisma.service.js';
 import { CreateRestriccionDto } from './dto/create-restriccion.dto.js';
 import { UpdateRestriccionDto } from './dto/update-restriccion.dto.js';
+import { PrismaComercialService } from '../prisma/prisma-comercial.service.js';
 
 @Injectable()
 export class RestriccionesService {
-  constructor(private readonly prisma: PrismaService) { }
+  constructor(private readonly prisma: PrismaComercialService) { }
 
   private async verificarPlanExiste(PlanSuscripcionFK: number) {
     const plan = await this.prisma.planSuscripcion.findUnique({
