@@ -17,10 +17,12 @@ import { MensajesModule } from './mensajes/mensajes.module';
 import { CondicionesComunicacionModule } from './condiciones-comunicacion/condiciones-comunicacion.module';
 import { EstadosActividadModule } from './estados-actividad/estados-actividad.module';
 import { DonacionesModule } from './donaciones/donaciones.module';
+import { PrismaUsuariosService } from './prisma-usuarios/prisma-usuarios.service';
+import { PrismaUsuariosModule } from './prisma-usuarios/prisma-usuarios.module';
 
 @Module({
-  imports: [PrismaModule, UsuariosModule, UbicacionesModule, FotosModule, MusicasModule, PlanesSuscripcionModule, SuscripcionesModule, RestriccionesModule, InteraccionesModule, MatchesModule, ChatsModule, MensajesModule, CondicionesComunicacionModule, EstadosActividadModule, DonacionesModule],
+  imports: [PrismaModule, UsuariosModule, UbicacionesModule, FotosModule, MusicasModule, PlanesSuscripcionModule, SuscripcionesModule, RestriccionesModule, InteraccionesModule, MatchesModule, ChatsModule, MensajesModule, CondicionesComunicacionModule, EstadosActividadModule, DonacionesModule, PrismaUsuariosModule],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, PrismaUsuariosService],
 })
 export class AppModule { }
