@@ -17,11 +17,11 @@ import { MensajesModule } from './mensajes/mensajes.module';
 import { CondicionesComunicacionModule } from './condiciones-comunicacion/condiciones-comunicacion.module';
 import { EstadosActividadModule } from './estados-actividad/estados-actividad.module';
 import { DonacionesModule } from './donaciones/donaciones.module';
-import { PrismaUsuariosService } from './prisma-usuarios/prisma-usuarios.service';
-import { PrismaUsuariosModule } from './prisma-usuarios/prisma-usuarios.module';
-import { PrismaComercialService } from './prisma-comercial/prisma-comercial.service';
-import { PrismaComercialModule } from './prisma-comercial/prisma-comercial.module';
-import { PrismaInteraccionesModule } from './prisma-interacciones/prisma-interacciones.module';
+import { PrismaUsuariosService } from './prisma/prisma-usuarios.service';
+import { PrismaUsuariosModule } from './prisma/prisma-usuarios.module';
+import { PrismaComercialService } from './prisma/prisma-comercial.service';
+import { PrismaComercialModule } from './prisma/prisma-comercial.module';
+import { PrismaInteraccionesModule } from './prisma/prisma-interacciones.module';
 
 @Module({
   imports: [PrismaModule, UsuariosModule, UbicacionesModule, FotosModule, MusicasModule, PlanesSuscripcionModule, SuscripcionesModule, RestriccionesModule, InteraccionesModule, MatchesModule, ChatsModule, MensajesModule, CondicionesComunicacionModule, EstadosActividadModule, DonacionesModule, PrismaUsuariosModule, PrismaComercialModule, PrismaInteraccionesModule],
