@@ -21,9 +21,10 @@ import { PrismaUsuariosService } from './prisma-usuarios/prisma-usuarios.service
 import { PrismaUsuariosModule } from './prisma-usuarios/prisma-usuarios.module';
 import { PrismaComercialService } from './prisma-comercial/prisma-comercial.service';
 import { PrismaComercialModule } from './prisma-comercial/prisma-comercial.module';
+import { PrismaInteraccionesModule } from './prisma-interacciones/prisma-interacciones.module';
 
 @Module({
-  imports: [PrismaModule, UsuariosModule, UbicacionesModule, FotosModule, MusicasModule, PlanesSuscripcionModule, SuscripcionesModule, RestriccionesModule, InteraccionesModule, MatchesModule, ChatsModule, MensajesModule, CondicionesComunicacionModule, EstadosActividadModule, DonacionesModule, PrismaUsuariosModule, PrismaComercialModule],
+  imports: [PrismaModule, UsuariosModule, UbicacionesModule, FotosModule, MusicasModule, PlanesSuscripcionModule, SuscripcionesModule, RestriccionesModule, InteraccionesModule, MatchesModule, ChatsModule, MensajesModule, CondicionesComunicacionModule, EstadosActividadModule, DonacionesModule, PrismaUsuariosModule, PrismaComercialModule, PrismaInteraccionesModule],
   controllers: [AppController],
   providers: [AppService, PrismaUsuariosService, PrismaComercialService],
 })
