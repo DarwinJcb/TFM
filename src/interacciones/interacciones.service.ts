@@ -1,17 +1,21 @@
 /* src/interacciones/interacciones.service.ts: */
 // import { PrismaService } from '../prisma/prisma.service.js';
+// constructor(private readonly prisma: PrismaService) { }
 import { BadRequestException, ConflictException, Injectable, NotFoundException, } from '@nestjs/common';
 import { CreateInteraccionDto } from './dto/create-interaccion.dto.js';
 import { UpdateInteraccionDto } from './dto/update-interaccion.dto.js';
 import { PrismaInteraccionesService } from '../prisma/prisma-interacciones.service.js';
+import { PrismaUsuariosService } from '../prisma/prisma-usuarios.service.js';
 
 @Injectable()
 export class InteraccionesService {
-  // constructor(private readonly prisma: PrismaService) { }
-  constructor(private readonly prisma: PrismaInteraccionesService) { }
+  constructor(
+    private readonly prisma: PrismaInteraccionesService,
+    private readonly prismaUsuarios: PrismaUsuariosService,
+  ) { }
 
   private async verificarUsuarioExiste(idUsuario: number, nombreCampo: string) {
-    const usuario = await this.prisma.usuario.findUnique({
+    const usuario = await this.prismaUsuarios.usuario.findUnique({
       where: {
         IdUsuario: idUsuario,
       },
@@ -71,10 +75,6 @@ export class InteraccionesService {
 
     const interaccion = await this.prisma.interaccion.create({
       data: createInteraccionDto,
-      include: {
-        usuarioOrigen: true,
-        usuarioDestino: true,
-      },
     });
 
     if (createInteraccionDto.tipo === 'LIKE') {
@@ -130,22 +130,13 @@ export class InteraccionesService {
   }
 
   findAll() {
-    return this.prisma.interaccion.findMany({
-      include: {
-        usuarioOrigen: true,
-        usuarioDestino: true,
-      },
-    });
+    return this.prisma.interaccion.findMany();
   }
 
   async findOne(id: number) {
     const interaccion = await this.prisma.interaccion.findUnique({
       where: {
         IdInteraccion: id,
-      },
-      include: {
-        usuarioOrigen: true,
-        usuarioDestino: true,
       },
     });
 
@@ -157,42 +148,56 @@ export class InteraccionesService {
   }
 
   async update(id: number, updateInteraccionDto: UpdateInteraccionDto) {
-    await this.findOne(id);
+    const interaccionActual = await this.findOne(id);
+
+    const UsuarioOrigenFK =
+      updateInteraccionDto.UsuarioOrigenFK ?? interaccionActual.UsuarioOrigenFK;
+
+    const UsuarioDestinoFK =
+      updateInteraccionDto.UsuarioDestinoFK ??
+      interaccionActual.UsuarioDestinoFK;
+
+    const tipo = updateInteraccionDto.tipo ?? interaccionActual.tipo;
+
+    this.validarUsuariosDiferentes(UsuarioOrigenFK, UsuarioDestinoFK);
+
+    await this.verificarUsuarioExiste(UsuarioOrigenFK, 'Usuario origen');
+    await this.verificarUsuarioExiste(UsuarioDestinoFK, 'Usuario destino');
+
+    const interaccionExistente = await this.prisma.interaccion.findUnique({
+      where: {
+        UsuarioOrigenFK_UsuarioDestinoFK_tipo: {
+          UsuarioOrigenFK,
+          UsuarioDestinoFK,
+          tipo,
+        },
+      },
+    });
 
     if (
-      updateInteraccionDto.UsuarioOrigenFK !== undefined &&
-      updateInteraccionDto.UsuarioDestinoFK !== undefined
+      interaccionExistente &&
+      interaccionExistente.IdInteraccion !== id
     ) {
-      this.validarUsuariosDiferentes(
-        updateInteraccionDto.UsuarioOrigenFK,
-        updateInteraccionDto.UsuarioDestinoFK,
+      throw new ConflictException(
+        'Esta interacción ya existe entre estos usuarios',
       );
     }
 
-    if (updateInteraccionDto.UsuarioOrigenFK !== undefined) {
-      await this.verificarUsuarioExiste(
-        updateInteraccionDto.UsuarioOrigenFK,
-        'Usuario origen',
-      );
-    }
-
-    if (updateInteraccionDto.UsuarioDestinoFK !== undefined) {
-      await this.verificarUsuarioExiste(
-        updateInteraccionDto.UsuarioDestinoFK,
-        'Usuario destino',
-      );
-    }
-
-    return this.prisma.interaccion.update({
+    const interaccionActualizada = await this.prisma.interaccion.update({
       where: {
         IdInteraccion: id,
       },
       data: updateInteraccionDto,
-      include: {
-        usuarioOrigen: true,
-        usuarioDestino: true,
-      },
     });
+
+    if (interaccionActualizada.tipo === 'LIKE') {
+      await this.crearMatchSiExisteLikeMutuo(
+        interaccionActualizada.UsuarioOrigenFK,
+        interaccionActualizada.UsuarioDestinoFK,
+      );
+    }
+
+    return interaccionActualizada;
   }
 
   async remove(id: number) {

@@ -1,14 +1,19 @@
 /* src/mensajes/mensajes.service.ts: */
 // import { PrismaService } from '../prisma/prisma.service.js';
+// constructor(private readonly prisma: PrismaService) { }
+
 import { BadRequestException, Injectable, NotFoundException, } from '@nestjs/common';
 import { CreateMensajeDto } from './dto/create-mensaje.dto.js';
 import { UpdateMensajeDto } from './dto/update-mensaje.dto.js';
 import { PrismaInteraccionesService } from '../prisma/prisma-interacciones.service.js';
+import { PrismaUsuariosService } from '../prisma/prisma-usuarios.service.js';
 
 @Injectable()
 export class MensajesService {
-  // constructor(private readonly prisma: PrismaService) { }
-  constructor(private readonly prisma: PrismaInteraccionesService) { }
+  constructor(
+    private readonly prisma: PrismaInteraccionesService,
+    private readonly prismaUsuarios: PrismaUsuariosService,
+  ) { }
 
   private async verificarChatExiste(ChatFK: number) {
     const chat = await this.prisma.chat.findUnique({
@@ -25,12 +30,11 @@ export class MensajesService {
   }
 
   private async verificarUsuarioExiste(UsuarioFK: number) {
-    const usuario = await this.prisma.usuario.findUnique({
+    const usuario = await this.prismaUsuarios.usuario.findUnique({
       where: {
         IdUsuario: UsuarioFK,
       },
     });
-
 
     if (!usuario) {
       throw new NotFoundException(`Usuario con ID ${UsuarioFK} no encontrado`);
@@ -46,9 +50,7 @@ export class MensajesService {
     const chat = await this.verificarChatExiste(ChatFK);
 
     if (chat.UsuarioUnoFK !== UsuarioFK && chat.UsuarioDosFK !== UsuarioFK) {
-      throw new BadRequestException(
-        'El usuario no pertenece a este chat',
-      );
+      throw new BadRequestException('El usuario no pertenece a este chat');
     }
 
     return chat;
@@ -56,6 +58,7 @@ export class MensajesService {
 
   async create(createMensajeDto: CreateMensajeDto) {
     await this.verificarUsuarioExiste(createMensajeDto.UsuarioFK);
+
     await this.verificarUsuarioPerteneceAlChat(
       createMensajeDto.ChatFK,
       createMensajeDto.UsuarioFK,
@@ -65,7 +68,6 @@ export class MensajesService {
       data: createMensajeDto,
       include: {
         chat: true,
-        usuario: true,
       },
     });
   }
@@ -74,7 +76,6 @@ export class MensajesService {
     return this.prisma.mensaje.findMany({
       include: {
         chat: true,
-        usuario: true,
       },
     });
   }
@@ -86,7 +87,6 @@ export class MensajesService {
       },
       include: {
         chat: true,
-        usuario: true,
       },
     });
 
@@ -98,21 +98,14 @@ export class MensajesService {
   }
 
   async update(id: number, updateMensajeDto: UpdateMensajeDto) {
-    await this.findOne(id);
+    const mensajeActual = await this.findOne(id);
 
-    if (updateMensajeDto.UsuarioFK !== undefined) {
-      await this.verificarUsuarioExiste(updateMensajeDto.UsuarioFK);
-    }
+    const ChatFK = updateMensajeDto.ChatFK ?? mensajeActual.ChatFK;
+    const UsuarioFK = updateMensajeDto.UsuarioFK ?? mensajeActual.UsuarioFK;
 
-    if (
-      updateMensajeDto.ChatFK !== undefined &&
-      updateMensajeDto.UsuarioFK !== undefined
-    ) {
-      await this.verificarUsuarioPerteneceAlChat(
-        updateMensajeDto.ChatFK,
-        updateMensajeDto.UsuarioFK,
-      );
-    }
+    await this.verificarUsuarioExiste(UsuarioFK);
+
+    await this.verificarUsuarioPerteneceAlChat(ChatFK, UsuarioFK);
 
     return this.prisma.mensaje.update({
       where: {
@@ -121,7 +114,6 @@ export class MensajesService {
       data: updateMensajeDto,
       include: {
         chat: true,
-        usuario: true,
       },
     });
   }

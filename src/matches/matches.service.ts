@@ -1,17 +1,21 @@
 /* src/matches/matches.service.ts: */
 // import { PrismaService } from '../prisma/prisma.service.js';
+// constructor(private readonly prisma: PrismaService) { }
 import { BadRequestException, ConflictException, Injectable, NotFoundException, } from '@nestjs/common';
 import { CreateMatchDto } from './dto/create-match.dto.js';
 import { UpdateMatchDto } from './dto/update-match.dto.js';
 import { PrismaInteraccionesService } from '../prisma/prisma-interacciones.service.js';
+import { PrismaUsuariosService } from '../prisma/prisma-usuarios.service.js';
 
 @Injectable()
 export class MatchesService {
-  // constructor(private readonly prisma: PrismaService) { }
-  constructor(private readonly prisma: PrismaInteraccionesService) { }
+  constructor(
+    private readonly prisma: PrismaInteraccionesService,
+    private readonly prismaUsuarios: PrismaUsuariosService,
+  ) { }
 
   private async verificarUsuarioExiste(idUsuario: number, nombreCampo: string) {
-    const usuario = await this.prisma.usuario.findUnique({
+    const usuario = await this.prismaUsuarios.usuario.findUnique({
       where: {
         IdUsuario: idUsuario,
       },
@@ -68,8 +72,6 @@ export class MatchesService {
         activo: createMatchDto.activo,
       },
       include: {
-        usuarioUno: true,
-        usuarioDos: true,
         chats: true,
       },
     });
@@ -78,8 +80,6 @@ export class MatchesService {
   findAll() {
     return this.prisma.match.findMany({
       include: {
-        usuarioUno: true,
-        usuarioDos: true,
         chats: true,
       },
     });
@@ -91,8 +91,6 @@ export class MatchesService {
         IdMatch: id,
       },
       include: {
-        usuarioUno: true,
-        usuarioDos: true,
         chats: true,
       },
     });
@@ -115,8 +113,6 @@ export class MatchesService {
         activo: updateMatchDto.activo,
       },
       include: {
-        usuarioUno: true,
-        usuarioDos: true,
         chats: true,
       },
     });

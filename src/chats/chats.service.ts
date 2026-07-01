@@ -1,15 +1,22 @@
 /* src/chats/chats.service.ts: */
 // import { PrismaService } from '../prisma/prisma.service.js';
+// constructor(private readonly prisma: PrismaService) { }
+
 import { BadRequestException, ConflictException, Injectable, NotFoundException, } from '@nestjs/common';
 import { CreateChatDto } from './dto/create-chat.dto.js';
 import { UpdateChatDto } from './dto/update-chat.dto.js';
 import { PrismaInteraccionesService } from '../prisma/prisma-interacciones.service.js';
+import { PrismaUsuariosService } from '../prisma/prisma-usuarios.service.js';
 
 @Injectable()
 export class ChatsService {
-  constructor(private readonly prisma: PrismaInteraccionesService) { }
+  constructor(
+    private readonly prisma: PrismaInteraccionesService,
+    private readonly prismaUsuarios: PrismaUsuariosService,
+  ) { }
+
   private async verificarUsuarioExiste(idUsuario: number, nombreCampo: string) {
-    const usuario = await this.prisma.usuario.findUnique({
+    const usuario = await this.prismaUsuarios.usuario.findUnique({
       where: {
         IdUsuario: idUsuario,
       },
@@ -51,6 +58,22 @@ export class ChatsService {
     return match;
   }
 
+  private validarMatchPerteneceAlChat(
+    UsuarioUnoFK: number,
+    UsuarioDosFK: number,
+    MatchUsuarioUnoFK: number,
+    MatchUsuarioDosFK: number,
+  ) {
+    if (
+      UsuarioUnoFK !== MatchUsuarioUnoFK ||
+      UsuarioDosFK !== MatchUsuarioDosFK
+    ) {
+      throw new BadRequestException(
+        'El match no corresponde a los usuarios del chat',
+      );
+    }
+  }
+
   async create(createChatDto: CreateChatDto) {
     await this.verificarUsuarioExiste(createChatDto.UsuarioUnoFK, 'Usuario uno');
     await this.verificarUsuarioExiste(createChatDto.UsuarioDosFK, 'Usuario dos');
@@ -61,7 +84,14 @@ export class ChatsService {
     );
 
     if (createChatDto.MatchFK !== undefined) {
-      await this.verificarMatchExiste(createChatDto.MatchFK);
+      const match = await this.verificarMatchExiste(createChatDto.MatchFK);
+
+      this.validarMatchPerteneceAlChat(
+        usuarioMenor,
+        usuarioMayor,
+        match.UsuarioUnoFK,
+        match.UsuarioDosFK,
+      );
     }
 
     const chatExistente = await this.prisma.chat.findUnique({
@@ -84,8 +114,6 @@ export class ChatsService {
         MatchFK: createChatDto.MatchFK,
       },
       include: {
-        usuarioUno: true,
-        usuarioDos: true,
         match: true,
         mensajes: true,
       },
@@ -95,8 +123,6 @@ export class ChatsService {
   findAll() {
     return this.prisma.chat.findMany({
       include: {
-        usuarioUno: true,
-        usuarioDos: true,
         match: true,
         mensajes: true,
       },
@@ -109,8 +135,6 @@ export class ChatsService {
         IdChat: id,
       },
       include: {
-        usuarioUno: true,
-        usuarioDos: true,
         match: true,
         mensajes: true,
       },
@@ -124,10 +148,17 @@ export class ChatsService {
   }
 
   async update(id: number, updateChatDto: UpdateChatDto) {
-    await this.findOne(id);
+    const chatActual = await this.findOne(id);
 
     if (updateChatDto.MatchFK !== undefined) {
-      await this.verificarMatchExiste(updateChatDto.MatchFK);
+      const match = await this.verificarMatchExiste(updateChatDto.MatchFK);
+
+      this.validarMatchPerteneceAlChat(
+        chatActual.UsuarioUnoFK,
+        chatActual.UsuarioDosFK,
+        match.UsuarioUnoFK,
+        match.UsuarioDosFK,
+      );
     }
 
     return this.prisma.chat.update({
@@ -138,8 +169,6 @@ export class ChatsService {
         MatchFK: updateChatDto.MatchFK,
       },
       include: {
-        usuarioUno: true,
-        usuarioDos: true,
         match: true,
         mensajes: true,
       },
