@@ -4,10 +4,11 @@ import { Module } from '@nestjs/common';
 import { InteraccionesService } from './interacciones.service.js';
 import { InteraccionesController } from './interacciones.controller.js';
 import { PrismaInteraccionesModule } from '../prisma/prisma-interacciones.module.js';
+import { PrismaUsuariosModule } from '../prisma/prisma-usuarios.module.js';
 
 @Module({
   // imports: [PrismaModule],
-  imports: [PrismaInteraccionesModule],
+  imports: [PrismaInteraccionesModule, PrismaUsuariosModule],
   controllers: [InteraccionesController],
   providers: [InteraccionesService],
 })
