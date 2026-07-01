@@ -1,12 +1,13 @@
 /* src/usuarios/usuarios.service.ts: */
+// import { PrismaService } from '../prisma/prisma.service.js';
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { PrismaService } from '../prisma/prisma.service.js';
+import { PrismaUsuariosService } from '../prisma/prisma-usuarios.service.js';
 import { CreateUsuarioDto } from './dto/create-usuario.dto.js';
 import { UpdateUsuarioDto } from './dto/update-usuario.dto.js';
 
 @Injectable()
 export class UsuariosService {
-  constructor(private readonly prisma: PrismaService) { }
+  constructor(private readonly prisma: PrismaUsuariosService) { }
 
   create(createUsuarioDto: CreateUsuarioDto) {
     return this.prisma.usuario.create({
@@ -20,11 +21,6 @@ export class UsuariosService {
         fotos: true,
         ubicaciones: true,
         musicas: true,
-        suscripcion: {
-          include: {
-            planSuscripcion: true,
-          },
-        },
         condicionComunicacion: true,
         estadoActividad: true,
       },
@@ -40,11 +36,6 @@ export class UsuariosService {
         fotos: true,
         ubicaciones: true,
         musicas: true,
-        suscripcion: {
-          include: {
-            planSuscripcion: true,
-          },
-        },
         condicionComunicacion: true,
         estadoActividad: true,
       },

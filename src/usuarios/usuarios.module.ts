@@ -1,11 +1,14 @@
 /* src/usuarios/usuarios.module.ts: */
+// import { PrismaModule } from '../prisma/prisma.module.js';
 import { Module } from '@nestjs/common';
 import { UsuariosService } from './usuarios.service.js';
 import { UsuariosController } from './usuario.controller.js';
-import { PrismaModule } from '../prisma/prisma.module.js';
+import { PrismaUsuariosModule } from '../prisma/prisma-usuarios.module.js';
+
 
 @Module({
-  imports: [PrismaModule],
+  // imports: [PrismaModule],
+  imports: [PrismaUsuariosModule],
   controllers: [UsuariosController],
   providers: [UsuariosService],
 })
