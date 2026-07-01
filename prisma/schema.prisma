@@ -43,6 +43,7 @@ model Usuario {
   genero                  Genero
   numero                  String?
   correo                  String                 @unique
+  contrasenaHash          String?
   signoZodiacal           String?
   queBusca                String?
   hobby                   String?

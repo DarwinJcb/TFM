@@ -27,6 +27,7 @@ model Usuario {
   genero                Genero
   numero                String?
   correo                String                 @unique
+  contrasenaHash        String?
   signoZodiacal         String?
   queBusca              String?
   hobby                 String?
@@ -52,11 +53,11 @@ model Ubicacion {
 }
 
 model Foto {
-  IdFoto Int @id @default(autoincrement())
-  urlFoto     String
-  descripcion String?
-  UsuarioFK Int
-  usuario   Usuario @relation(fields: [UsuarioFK], references: [IdUsuario], onDelete: Cascade)
+  IdFoto        Int      @id @default(autoincrement())
+  urlFoto       String
+  descripcion   String?
+  UsuarioFK     Int
+  usuario       Usuario  @relation(fields: [UsuarioFK], references: [IdUsuario], onDelete: Cascade)
   fechaCreacion DateTime @default(now())
 }
 
