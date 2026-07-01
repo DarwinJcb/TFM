@@ -1,12 +1,14 @@
 /* src/matches/matches.service.ts: */
+// import { PrismaService } from '../prisma/prisma.service.js';
 import { BadRequestException, ConflictException, Injectable, NotFoundException, } from '@nestjs/common';
-import { PrismaService } from '../prisma/prisma.service.js';
 import { CreateMatchDto } from './dto/create-match.dto.js';
 import { UpdateMatchDto } from './dto/update-match.dto.js';
+import { PrismaInteraccionesService } from '../prisma/prisma-interacciones.service.js';
 
 @Injectable()
 export class MatchesService {
-  constructor(private readonly prisma: PrismaService) { }
+  // constructor(private readonly prisma: PrismaService) { }
+  constructor(private readonly prisma: PrismaInteraccionesService) { }
 
   private async verificarUsuarioExiste(idUsuario: number, nombreCampo: string) {
     const usuario = await this.prisma.usuario.findUnique({

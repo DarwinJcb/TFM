@@ -1,11 +1,13 @@
 /* src/interacciones/interacciones.module.ts: */
+// import { PrismaModule } from '../prisma/prisma.module.js';
 import { Module } from '@nestjs/common';
 import { InteraccionesService } from './interacciones.service.js';
 import { InteraccionesController } from './interacciones.controller.js';
-import { PrismaModule } from '../prisma/prisma.module.js';
+import { PrismaInteraccionesModule } from '../prisma/prisma-interacciones.module.js';
 
 @Module({
-  imports: [PrismaModule],
+  // imports: [PrismaModule],
+  imports: [PrismaInteraccionesModule],
   controllers: [InteraccionesController],
   providers: [InteraccionesService],
 })

@@ -1,12 +1,14 @@
 /* src/mensajes/mensajes.service.ts: */
+// import { PrismaService } from '../prisma/prisma.service.js';
 import { BadRequestException, Injectable, NotFoundException, } from '@nestjs/common';
-import { PrismaService } from '../prisma/prisma.service.js';
 import { CreateMensajeDto } from './dto/create-mensaje.dto.js';
 import { UpdateMensajeDto } from './dto/update-mensaje.dto.js';
+import { PrismaInteraccionesService } from '../prisma/prisma-interacciones.service.js';
 
 @Injectable()
 export class MensajesService {
-  constructor(private readonly prisma: PrismaService) { }
+  // constructor(private readonly prisma: PrismaService) { }
+  constructor(private readonly prisma: PrismaInteraccionesService) { }
 
   private async verificarChatExiste(ChatFK: number) {
     const chat = await this.prisma.chat.findUnique({
@@ -28,6 +30,7 @@ export class MensajesService {
         IdUsuario: UsuarioFK,
       },
     });
+
 
     if (!usuario) {
       throw new NotFoundException(`Usuario con ID ${UsuarioFK} no encontrado`);
