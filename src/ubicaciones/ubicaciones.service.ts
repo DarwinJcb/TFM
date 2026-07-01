@@ -1,12 +1,15 @@
 /* src/ubicaciones/ubicaciones.service.ts: */
+// import { PrismaService } from '../prisma/prisma.service.js';
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { PrismaService } from '../prisma/prisma.service.js';
 import { CreateUbicacionDto } from './dto/create-ubicacion.dto.js';
 import { UpdateUbicacionDto } from './dto/update-ubicacion.dto.js';
+import { PrismaUsuariosService } from '../prisma/prisma-usuarios.service.js';
 
 @Injectable()
 export class UbicacionesService {
-  constructor(private readonly prisma: PrismaService) { }
+  // constructor(private readonly prisma: PrismaService) { }
+  constructor(private readonly prisma: PrismaUsuariosService) { }
+
 
   private async verificarUsuarioExiste(UsuarioFK: number) {
     const usuario = await this.prisma.usuario.findUnique({

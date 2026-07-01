@@ -1,12 +1,14 @@
 /* src/estados-actividad/estados-actividad.service.ts: */
+// import { PrismaService } from '../prisma/prisma.service.js';
 import { ConflictException, Injectable, NotFoundException, } from '@nestjs/common';
-import { PrismaService } from '../prisma/prisma.service.js';
 import { CreateEstadoActividadDto } from './dto/create-estado-actividad.dto.js';
 import { UpdateEstadoActividadDto } from './dto/update-estado-actividad.dto.js';
+import { PrismaUsuariosService } from '../prisma/prisma-usuarios.service.js';
 
 @Injectable()
 export class EstadosActividadService {
-  constructor(private readonly prisma: PrismaService) { }
+  // constructor(private readonly prisma: PrismaService) { }
+  constructor(private readonly prisma: PrismaUsuariosService) { }
 
   private async verificarUsuarioExiste(UsuarioFK: number) {
     const usuario = await this.prisma.usuario.findUnique({

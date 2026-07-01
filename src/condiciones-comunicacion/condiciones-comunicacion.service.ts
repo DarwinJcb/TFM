@@ -1,12 +1,14 @@
 /* src/condiciones-comunicacion/condiciones-comunicacion.service.ts: */
+// import { PrismaService } from '../prisma/prisma.service.js';
 import { ConflictException, Injectable, NotFoundException, } from '@nestjs/common';
-import { PrismaService } from '../prisma/prisma.service.js';
 import { CreateCondicionComunicacionDto } from './dto/create-condicion-comunicacion.dto.js';
 import { UpdateCondicionComunicacionDto } from './dto/update-condicion-comunicacion.dto.js';
+import { PrismaUsuariosService } from '../prisma/prisma-usuarios.service.js';
 
 @Injectable()
 export class CondicionesComunicacionService {
-  constructor(private readonly prisma: PrismaService) { }
+  // constructor(private readonly prisma: PrismaService) { }
+  constructor(private readonly prisma: PrismaUsuariosService) { }
 
   private async verificarUsuarioExiste(UsuarioFK: number) {
     const usuario = await this.prisma.usuario.findUnique({
